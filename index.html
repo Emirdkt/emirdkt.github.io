@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emir Can Diktaş - Portfolio</title>
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'bounce-slow': 'bounce-slow 4s ease-in-out infinite',
+                        'blink': 'blink 1s step-end infinite',
+                    },
+                    keyframes: {
+                        'bounce-slow': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        'blink': {
+                            'from, to': { opacity: '1' },
+                            '50%': { opacity: '0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-[#fafcff] text-slate-900 transition-colors duration-300 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-[#fafcff]/80 border-slate-100 dark:bg-[#0f172a]/80 dark:border-slate-800 backdrop-blur-md border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 font-bold text-xl flex items-center gap-2">
+                    <span class="text-cyan-500">&gt;_</span> <span class="dark:text-white text-slate-900">Emir Can</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex space-x-8 items-center" id="nav-links">
+                    <a href="#hero" class="nav-link text-sm font-medium transition-colors text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400" data-target="hero" data-i18n="nav.home">Ana Sayfa</a>
+                    <a href="#about" class="nav-link text-sm font-medium transition-colors text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400" data-target="about" data-i18n="nav.about">Hakkımda</a>
+                    <a href="#skills" class="nav-link text-sm font-medium transition-colors text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400" data-target="skills" data-i18n="nav.skills">Yetenekler</a>
+                    <a href="#experience" class="nav-link text-sm font-medium transition-colors text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400" data-target="experience" data-i18n="nav.exp">Deneyim</a>
+                    <a href="#projects" class="nav-link text-sm font-medium transition-colors text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400" data-target="projects" data-i18n="nav.proj">Projeler</a>
+                    <a href="#contact" class="nav-link text-sm font-medium transition-colors text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400" data-target="contact" data-i18n="nav.contact">İletişim</a>
+                </div>
+
+                <!-- Desktop Actions -->
+                <div class="hidden md:flex items-center space-x-2 lg:space-x-4">
+                    <button onclick="toggleLang()" class="px-2 py-1 font-bold text-sm rounded transition-colors text-slate-600 hover:text-blue-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-blue-400 dark:hover:bg-slate-800" id="lang-btn-desktop">EN</button>
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full transition-colors hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="sun" class="hidden dark:block text-yellow-400 w-5 h-5"></i>
+                        <i data-lucide="moon" class="block dark:hidden text-slate-600 w-5 h-5"></i>
+                    </button>
+                    <a href="#contact" data-i18n="contact.title" class="bg-[#1a73e8] hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-all shadow-md shadow-blue-500/20 text-sm ml-2">Bana Ulaşın</a>
+                </div>
+
+                <!-- Mobile Actions -->
+                <div class="lg:hidden flex items-center space-x-2">
+                    <button onclick="toggleLang()" class="px-2 py-1 font-bold text-sm rounded text-slate-600 dark:text-slate-300" id="lang-btn-mobile">EN</button>
+                    <button onclick="toggleDarkMode()" class="p-2">
+                        <i data-lucide="sun" class="hidden dark:block text-yellow-400 w-5 h-5"></i>
+                        <i data-lucide="moon" class="block dark:hidden text-slate-600 w-5 h-5"></i>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="p-2">
+                        <i data-lucide="menu" id="menu-icon-open" class="block w-6 h-6"></i>
+                        <i data-lucide="x" id="menu-icon-close" class="hidden w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden absolute w-full bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3" id="mobile-nav-links">
+                <!-- Mobile links populated by JS -->
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden">
+            <!-- Background Effects -->
+            <div class="block dark:hidden absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-50/40 via-[#fafcff] to-blue-50/50 -z-10"></div>
+            <div class="block dark:hidden absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-100/40 rounded-full mix-blend-multiply filter blur-3xl -z-10 animate-pulse"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full relative z-10">
+                <!-- Left Column: Text -->
+                <div class="flex flex-col items-start text-left">
+                    <div class="reveal" style="transition-delay: 100ms;">
+                        <div class="inline-flex items-center px-4 py-1.5 rounded-full border mb-8 border-cyan-100 bg-cyan-50 text-cyan-600 dark:border-cyan-800 dark:bg-cyan-900/20 dark:text-cyan-400">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5 mr-2"></i>
+                            <span class="text-xs font-semibold uppercase tracking-wider" data-i18n="hero.loc">İstanbul, Türkiye</span>
+                        </div>
+                    </div>
+                    
+                    <div class="reveal" style="transition-delay: 200ms;">
+                        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-2 text-[#1e293b] dark:text-white">
+                            <span data-i18n="hero.greeting">Merhaba, Ben</span> <span class="text-[#06b6d4]">Emir</span>
+                        </h1>
+                        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-[#1a73e8]">
+                            Can Diktaş
+                        </h1>
+                    </div>
+                    
+                    <div class="reveal" style="transition-delay: 300ms;">
+                        <div class="text-2xl md:text-3xl font-medium mb-6 h-10 flex items-center text-[#334155] dark:text-slate-300">
+                            <span id="typewriter"></span><span class="animate-blink ml-1 w-0.5 h-8 bg-current inline-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="reveal" style="transition-delay: 400ms;">
+                        <p class="text-lg mb-8 max-w-lg leading-relaxed text-[#475569] dark:text-slate-400" data-i18n="hero.desc">
+                            Kurumsal BT altyapısı, sistem yönetimi ve ağ mühendisliği konularında tutkulu. Şu anda Esenyurt Üniversitesi'nde Active Directory, TCP/IP ağları ve BT destek alanında uzmanlaşıyorum.
+                        </p>
+                    </div>
+
+                    <div class="reveal flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 w-full sm:w-auto mb-10" style="transition-delay: 500ms;">
+                        <a href="#projects" class="px-6 py-3 rounded-lg bg-[#1a73e8] hover:bg-blue-700 text-white font-medium transition-all flex items-center justify-center group">
+                            <span data-i18n="hero.viewWork">Projelerimi Gör</span>
+                            <i data-lucide="chevron-right" class="w-4.5 h-4.5 ml-2 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="#cv" class="px-6 py-3 rounded-lg font-medium transition-all border flex items-center justify-center gap-2 border-slate-300 bg-white hover:bg-slate-50 text-[#334155] dark:border-slate-700 dark:hover:bg-slate-800 dark:text-slate-300 dark:bg-transparent">
+                            <i data-lucide="download" class="w-4.5 h-4.5"></i>
+                            <span data-i18n="hero.dlCV">CV İndir</span>
+                        </a>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="reveal flex space-x-3" style="transition-delay: 600ms;">
+                        <a href="https://linkedin.com/in/emircandiktas/" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-xl border transition-all border-slate-200 text-slate-500 hover:text-slate-900 hover:border-slate-400 bg-white shadow-sm dark:border-slate-700 dark:text-slate-400 dark:hover:text-white dark:hover:border-slate-500 dark:bg-transparent">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                        <a href="https://github.com/EmirDkt" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-xl border transition-all border-slate-200 text-slate-500 hover:text-slate-900 hover:border-slate-400 bg-white shadow-sm dark:border-slate-700 dark:text-slate-400 dark:hover:text-white dark:hover:border-slate-500 dark:bg-transparent">
+                            <i data-lucide="github" class="w-5 h-5"></i>
+                        </a>
+                        <a href="mailto:emircandiktas@outlook.com" class="w-12 h-12 flex items-center justify-center rounded-xl border transition-all border-slate-200 text-slate-500 hover:text-slate-900 hover:border-slate-400 bg-white shadow-sm dark:border-slate-700 dark:text-slate-400 dark:hover:text-white dark:hover:border-slate-500 dark:bg-transparent">
+                            <i data-lucide="mail" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Column: Profile Image -->
+                <div class="reveal relative hidden lg:block" style="transition-delay: 300ms;">
+                    <div class="absolute inset-0 bg-blue-100 dark:bg-blue-900/20 transform rotate-3 rounded-[2rem] -z-10"></div>
+                    <div class="absolute inset-0 bg-cyan-50 dark:bg-cyan-900/10 transform -rotate-3 rounded-[2rem] -z-20"></div>
+
+                    <div class="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl h-[400px] w-full border-4 border-white dark:border-slate-800">
+                        <img src="1771161820146.jpg" alt="Emir Can Diktaş" class="w-full h-full object-cover object-top">
+                    </div>
+
+                    <div class="absolute -bottom-6 -right-6 p-6 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] z-20 flex flex-col items-center justify-center border animate-bounce-slow bg-white border-slate-50 dark:bg-slate-800 dark:border-slate-700">
+                        <span class="text-4xl font-extrabold text-[#06b6d4] mb-1">3+</span>
+                        <span class="text-sm font-medium text-slate-600 dark:text-slate-400" data-i18n="hero.expBadge">Yıllık Deneyim</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+                <a href="#about" class="flex flex-col items-center transition-opacity hover:opacity-70 text-slate-400">
+                    <div class="w-5 h-8 border-2 rounded-full flex justify-center p-1 mb-2 border-slate-400 dark:border-slate-500">
+                        <div class="w-1 h-1.5 bg-current rounded-full animate-bounce"></div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24 bg-white dark:bg-slate-900">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="reveal">
+                    <div class="inline-block mb-4 px-4 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-sm font-semibold border border-cyan-100 dark:border-cyan-800" data-i18n="about.pill">Hakkımda</div>
+                    <h2 class="text-4xl md:text-5xl font-extrabold mt-4 mb-6 leading-tight text-[#1e293b] dark:text-white">
+                        <span data-i18n="about.title1">Teknolojiye Tutkulu</span> <span class="text-[#0ea5e9]" data-i18n="about.title2">BT Profesyoneli</span>
+                    </h2>
+                    <p class="text-xl font-light mb-16 max-w-2xl mx-auto text-slate-500 dark:text-slate-300" data-i18n="about.desc">
+                        Sağlam BT altyapıları oluşturmaya ve olağanüstü teknik destek sunmaya adanmış.
+                    </p>
+                </div>
+
+                <div class="reveal text-left grid grid-cols-1 md:grid-cols-2 gap-12" style="transition-delay: 200ms;">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 flex items-center text-slate-800 dark:text-slate-200">
+                            <i data-lucide="monitor" class="mr-3 text-cyan-500"></i>
+                            <span data-i18n="about.who">Ben Kimim?</span>
+                        </h3>
+                        <p class="leading-relaxed mb-4 text-slate-600 dark:text-slate-400" data-i18n="about.whoDesc1">
+                            İstanbul, Esenyurt'ta yaşayan, donanım altyapısı ile yazılım çözümleri arasındaki köprüyü kurmaya tutkulu bir BT Teknisyeniyim.
+                        </p>
+                        <p class="leading-relaxed text-slate-600 dark:text-slate-400" data-i18n="about.whoDesc2">
+                            Uzmanlık alanım donanım/yazılım kurulumu, Help Desk operasyonları, Active Directory yönetimi ve ağ sorun gidermeyi kapsamaktadır.
+                        </p>
+                    </div>
+                    
+                    <div class="flex flex-col gap-8">
+                        <div>
+                            <h3 class="text-xl font-bold mb-4 flex items-center text-slate-800 dark:text-slate-200">
+                                <i data-lucide="graduation-cap" class="mr-3 text-cyan-500"></i>
+                                <span data-i18n="about.eduTitle">Eğitim</span>
+                            </h3>
+                            <ul class="space-y-4" id="education-container"></ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-4 flex items-center text-slate-800 dark:text-slate-200">
+                                <i data-lucide="award" class="mr-3 text-cyan-500"></i>
+                                <span data-i18n="about.certTitle">Sertifikalar</span>
+                            </h3>
+                            <ul class="space-y-4" id="cert-container"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 bg-slate-50 dark:bg-slate-800/30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <div class="inline-block mb-4 px-4 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-sm font-semibold border border-cyan-100 dark:border-cyan-800" data-i18n="skills.pill">Yeteneklerim</div>
+                    <h2 class="text-3xl md:text-4xl font-bold mt-4 text-[#1e293b] dark:text-white" data-i18n="skills.title">
+                        Teknik Uzmanlık
+                    </h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="skills-container"></div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-24 bg-white dark:bg-slate-900">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <div class="inline-block mb-4 px-4 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-sm font-semibold border border-cyan-100 dark:border-cyan-800" data-i18n="exp.pill">İş Deneyimi</div>
+                    <h2 class="text-4xl md:text-5xl font-extrabold mt-4 mb-4 text-[#1e293b] dark:text-white">
+                        <span data-i18n="exp.title1">Profesyonel</span> <span class="text-[#1a73e8]" data-i18n="exp.title2">Kariyerim</span>
+                    </h2>
+                    <p class="text-lg font-medium text-slate-500 dark:text-slate-400" data-i18n="exp.desc">
+                        Kurumsal BT altyapısı ve destek alanında uzmanlık geliştirme
+                    </p>
+                </div>
+
+                <div class="reveal relative pl-6 md:pl-0" style="transition-delay: 200ms;">
+                    <div class="hidden md:block absolute left-4 top-8 bottom-0 w-0.5 bg-blue-500/20"></div>
+                    <div class="md:hidden absolute left-0 top-8 bottom-0 w-0.5 bg-blue-500/20"></div>
+                    <div id="experience-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-24 bg-[#f8fafc] dark:bg-slate-800/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-[#1e293b] dark:text-white">
+                        <span data-i18n="proj.title1">Öne Çıkan</span> <span class="text-[#1a73e8]" data-i18n="proj.title2">Projeler</span>
+                    </h2>
+                    <p class="text-lg font-medium text-slate-500 dark:text-slate-400" data-i18n="proj.desc">
+                        BT altyapısı ve ağ mühendisliğindeki pratik uygulamalar
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="projects-container"></div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 bg-white dark:bg-slate-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <div class="inline-block mb-4 px-4 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-sm font-semibold border border-cyan-100 dark:border-cyan-800" data-i18n="contact.pill">İletişim</div>
+                    <h2 class="text-4xl font-bold mt-4 text-[#1e293b] dark:text-white" data-i18n="contact.title">
+                        Bana Ulaşın
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                    <div class="reveal" style="transition-delay: 200ms;">
+                        <h3 class="text-2xl font-semibold mb-6" data-i18n="contact.info">İletişim Bilgileri</h3>
+                        <p class="mb-8 text-slate-600 dark:text-slate-400" data-i18n="contact.desc">
+                            Ağ sistemleri, yazılım geliştirme hakkında bir sorunuz varsa veya sadece merhaba demek isterseniz, size geri dönüş yapmaktan memnuniyet duyarım!
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <a href="mailto:emircandiktas@outlook.com" class="flex items-center p-4 rounded-xl border transition-all hover:-translate-y-1 bg-slate-50 border-slate-200 hover:border-cyan-400 hover:shadow-md dark:bg-slate-800 dark:border-slate-700 dark:hover:border-cyan-500">
+                                <div class="p-3 rounded-full mr-4 bg-white border text-cyan-600 dark:bg-cyan-500/20 dark:text-cyan-400 dark:border-transparent">
+                                    <i data-lucide="mail"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500" data-i18n="contact.email">E-posta</p>
+                                    <p class="font-medium text-slate-800 dark:text-slate-200">emircandiktas@outlook.com</p>
+                                </div>
+                            </a>
+
+                            <a href="tel:+905303718202" class="flex items-center p-4 rounded-xl border transition-all hover:-translate-y-1 bg-slate-50 border-slate-200 hover:border-cyan-400 hover:shadow-md dark:bg-slate-800 dark:border-slate-700 dark:hover:border-cyan-500">
+                                <div class="p-3 rounded-full mr-4 bg-white border text-cyan-600 dark:bg-cyan-500/20 dark:text-cyan-400 dark:border-transparent">
+                                    <i data-lucide="phone"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500" data-i18n="contact.phone">Telefon</p>
+                                    <p class="font-medium text-slate-800 dark:text-slate-200">+90 530 371 82 02</p>
+                                </div>
+                            </a>
+
+                            <div class="flex items-center p-4 rounded-xl border bg-slate-50 border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+                                <div class="p-3 rounded-full mr-4 bg-white border text-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:border-transparent">
+                                    <i data-lucide="map-pin"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500" data-i18n="contact.loc">Konum</p>
+                                    <p class="font-medium text-slate-800 dark:text-slate-200">Esenyurt, Istanbul, Turkey</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reveal" style="transition-delay: 400ms;">
+                        <div class="p-8 rounded-2xl border shadow-lg relative overflow-hidden bg-white border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+                            
+                            <!-- Success Message overlay -->
+                            <div id="form-success-overlay" class="hidden absolute inset-0 z-10 flex-col items-center justify-center bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm transition-opacity duration-300">
+                                <div class="w-16 h-16 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mb-4">
+                                    <i data-lucide="check-circle" class="text-green-600 dark:text-green-400 w-8 h-8"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-green-700 dark:text-green-400" id="success-msg">Mesajınız başarıyla gönderildi!</h4>
+                            </div>
+
+                            <h3 class="text-2xl font-semibold mb-6" data-i18n="contact.send">Mesaj Gönder</h3>
+                            <form class="space-y-4" id="contact-form">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="name" class="block text-xs font-bold mb-1 uppercase tracking-wide text-slate-500 dark:text-slate-400" data-i18n="contact.name">İsim</label>
+                                        <input type="text" id="name" required class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:outline-none transition-colors bg-slate-50 border-slate-200 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-900 dark:border-slate-700 dark:text-white" placeholder="Ad Soyad">
+                                    </div>
+                                    <div>
+                                        <label for="email" class="block text-xs font-bold mb-1 uppercase tracking-wide text-slate-500 dark:text-slate-400" data-i18n="contact.email">E-posta</label>
+                                        <input type="email" id="email" required class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:outline-none transition-colors bg-slate-50 border-slate-200 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-900 dark:border-slate-700 dark:text-white" placeholder="ornek@email.com">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="message" class="block text-xs font-bold mb-1 uppercase tracking-wide text-slate-500 dark:text-slate-400" data-i18n="contact.msg">Mesaj</label>
+                                    <textarea id="message" rows="4" required class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:outline-none transition-colors resize-none bg-slate-50 border-slate-200 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-900 dark:border-slate-700 dark:text-white" placeholder="Size nasıl yardımcı olabilirim?"></textarea>
+                                </div>
+                                <button type="submit" id="submit-btn" class="w-full py-3.5 px-6 rounded-lg font-semibold transition-all transform flex items-center justify-center shadow-md bg-[#1a73e8] hover:bg-blue-700 text-white hover:-translate-y-1 shadow-blue-500/20">
+                                    <i data-lucide="loader-2" id="spinner-icon" class="hidden animate-spin mr-2 w-5 h-5"></i>
+                                    <span id="submit-text" data-i18n="contact.send">Mesaj Gönder</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center border-t bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+            &copy; <span id="year"></span> Emir Can Diktaş. <span data-i18n="footer">Tüm hakları saklıdır.</span>
+        </p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Set Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // --- Data & Content ---
+        const content = {
+            tr: {
+                nav: { home: 'Ana Sayfa', about: 'Hakkımda', skills: 'Yetenekler', exp: 'Deneyim', proj: 'Projeler', contact: 'İletişim' },
+                hero: { greeting: "Merhaba, Ben", roles: ["BT Destek Uzmanı", "Bilgi İşlem Uzmanı", "Ağ Teknolojileri Tutkunu", "Sistem Yöneticisi"], desc: "Kurumsal BT altyapısı, sistem yönetimi ve ağ mühendisliği konularında tutkulu. Şu anda Esenyurt Üniversitesi'nde Active Directory, TCP/IP ağları ve BT destek alanında uzmanlaşıyorum.", viewWork: "Projelerimi Gör", dlCV: "CV İndir", expBadge: "Yıllık Deneyim", loc: "İstanbul, Türkiye" },
+                about: { pill: "Hakkımda", title1: "Teknolojiye Tutkulu", title2: "BT Profesyoneli", desc: "Sağlam BT altyapıları oluşturmaya ve olağanüstü teknik destek sunmaya adanmış.", who: "Ben Kimim?", whoDesc1: "İstanbul, Esenyurt'ta yaşayan, donanım altyapısı ile yazılım çözümleri arasındaki köprüyü kurmaya tutkulu bir BT Teknisyeniyim. Sağlam ağ temellerim ve teknik destek alanındaki pratik deneyimimle karmaşık sorunları çözmekten keyif alıyorum.", whoDesc2: "Uzmanlık alanım donanım/yazılım kurulumu, Help Desk operasyonları, Active Directory yönetimi ve ağ sorun gidermeyi kapsamaktadır.", eduTitle: "Eğitim", certTitle: "Sertifikalar" },
+                skills: { pill: "Yeteneklerim", title: "Teknik Uzmanlık" },
+                exp: { pill: "İş Deneyimi", title1: "Profesyonel", title2: "Kariyerim", desc: "Kurumsal BT altyapısı ve destek alanında uzmanlık geliştirme", respTitle: "Temel Sorumluluklar:" },
+                proj: { pill: "Öne Çıkan Projeler", title1: "Öne Çıkan", title2: "Projeler", desc: "BT altyapısı ve ağ mühendisliğindeki pratik uygulamalar", completed: "Tamamlandı", inProd: "Geliştirme Aşamasında", details: "Detaylar" },
+                contact: { pill: "İletişim", title: "Bana Ulaşın", info: "İletişim Bilgileri", desc: "Ağ sistemleri, yazılım geliştirme hakkında bir sorunuz varsa veya sadece merhaba demek isterseniz, size geri dönüş yapmaktan memnuniyet duyarım!", email: "E-posta", phone: "Telefon", loc: "Konum", send: "Mesaj Gönder", sending: "Gönderiliyor...", success: "Mesajınız başarıyla gönderildi!", name: "İsim", msg: "Mesaj", namePlaceholder: "Ad Soyad", emailPlaceholder: "ornek@email.com", msgPlaceholder: "Size nasıl yardımcı olabilirim?" },
+                footer: "Tüm hakları saklıdır."
+            },
+            en: {
+                nav: { home: 'Home', about: 'About', skills: 'Skills', exp: 'Experience', proj: 'Projects', contact: 'Contact' },
+                hero: { greeting: "Hi, I'm", roles: ["IT Support Specialist", "IT Specialist", "Network Enthusiast", "System Administrator"], desc: "Passionate about enterprise IT infrastructure, system administration, and network engineering. Currently specializing in Active Directory, TCP/IP networking, and IT support at Esenyurt University.", viewWork: "View My Work", dlCV: "Download CV", expBadge: "Years Experience", loc: "Istanbul, Turkey" },
+                about: { pill: "About Me", title1: "IT Professional with", title2: "Passion for Technology", desc: "Dedicated to building robust IT infrastructures and delivering exceptional technical support.", who: "Who I Am", whoDesc1: "I am an IT Technician based in Esenyurt, Istanbul, passionate about bridging the gap between hardware infrastructure and software solutions. With a solid foundation in network fundamentals and hands-on experience in technical support, I thrive on solving complex problems.", whoDesc2: "My expertise spans hardware/software setup, Help Desk operations, Active Directory management, and network troubleshooting.", eduTitle: "Education", certTitle: "Certifications" },
+                skills: { pill: "My Skills", title: "Technical Proficiency" },
+                exp: { pill: "Work Experience", title1: "Professional", title2: "Journey", desc: "Building expertise in enterprise IT infrastructure and support", respTitle: "Key Responsibilities:" },
+                proj: { pill: "Featured Projects", title1: "Featured", title2: "Projects", desc: "Showcasing practical implementations in IT infrastructure and network engineering", completed: "Completed", inProd: "In Production", details: "Details" },
+                contact: { pill: "Contact", title: "Get In Touch", info: "Contact Information", desc: "Whether you have a question about networking, software development, or just want to say hi, I'll try my best to get back to you!", email: "Email", phone: "Phone", loc: "Location", send: "Send Message", sending: "Sending...", success: "Your message has been sent successfully!", name: "Name", msg: "Message", namePlaceholder: "John Doe", emailPlaceholder: "john@example.com", msgPlaceholder: "How can I help you?" },
+                footer: "All rights reserved."
+            }
+        };
+
+        const educationData = {
+            tr: [{ title: "Işık Üniversitesi", desc: "Bilgisayar Programcılığı" }],
+            en: [{ title: "Işık University", desc: "Computer Programming" }]
+        };
+        const certData = {
+            tr: [{ title: "Young Executive Academy", desc: "Liderlik ve Yönetim" }, { title: "BTK Akademi", desc: "C# & .NET Geliştirme" }],
+            en: [{ title: "Young Executive Academy", desc: "Leadership & Management" }, { title: "BTK Akademi", desc: "C# & .NET Development" }]
+        };
+        const skillData = {
+            tr: [ { name: 'Ağ Temelleri / TCP-IP', level: 90 }, { name: 'Active Directory Yönetimi', level: 85 }, { name: 'Donanım & Yazılım Kurulumu', level: 95 }, { name: 'Zimmet / Varlık Takibi', level: 80 }, { name: 'Windows & Office Uzmanlığı', level: 90 }, { name: 'Switch / Router Konfig.', level: 75 }, { name: 'Teknik Dokümantasyon', level: 85 }, { name: 'Problem Çözme', level: 95 } ],
+            en: [ { name: 'Network Basics / TCP-IP', level: 90 }, { name: 'Active Directory Admin', level: 85 }, { name: 'Hardware & Software Setup', level: 95 }, { name: 'Asset Management', level: 80 }, { name: 'Windows & Office Expert', level: 90 }, { name: 'Switch / Router Config', level: 75 }, { name: 'Technical Documentation', level: 85 }, { name: 'Problem Solving', level: 95 } ]
+        };
+        const expData = {
+            tr: [
+                { title: "BT Destek Uzmanı", company: "Esenyurt Üniversitesi", date: "2022 - Günümüz", location: "İstanbul, Türkiye", badge: "Mevcut Pozisyon", resps: ["Donanım ve yazılım kurulumu ile konfigürasyonu", "İşletim sistemi kurulumu ve sorun giderme", "Teknik destek ve talep yönetimi (Ticket sistemi)", "IP, DNS, TCP/IP ağ sorunlarının analizi ve çözümü", "Temel VLAN konfigürasyonu ve switch/router yönetimi", "Active Directory kullanıcı, grup ve politika yönetimi", "Yazıcı, IP telefon ve çevre birimleri desteği", "BT envanter takibi ve donanım bakımı"] },
+                { title: "Stajyer", company: "Habitat Derneği", date: "2021 - 2022", location: "İstanbul, Türkiye", badge: "Staj", resps: ["Kullanıcı donanım ve yazılımlarının kurulumuna destek sağlama", "Temel ağ bağlantı sorunlarını giderme", "Kullanıcı teknik destek taleplerine yanıt verme", "Eğitim etkinliklerinde BT altyapısının kurulumuna yardımcı olma"] }
+            ],
+            en: [
+                { title: "IT Support Specialist", company: "Esenyurt University", date: "2022 - Present", location: "Istanbul, Turkey", badge: "Current Position", resps: ["Hardware & software installation and configuration", "Operating system setup and troubleshooting", "Technical support and ticket management system", "IP, DNS, TCP/IP network issue analysis and resolution", "Basic VLAN configuration and switch/router management", "Active Directory user, group, and policy administration", "Printer, IP phone, and peripheral device support", "IT inventory tracking and hardware maintenance"] },
+                { title: "IT Intern", company: "Habitat Derneği", date: "2021 - 2022", location: "Istanbul, Turkey", badge: "Internship", resps: ["Assisted in hardware and software installations for users", "Troubleshooted basic network connectivity issues", "Responded to user technical support requests", "Assisted in setting up IT infrastructure for training events"] }
+            ]
+        };
+        const projData = {
+            tr: [
+                { title: "Üniversite Ticket Sistemi", desc: "Üniversite genelindeki teknik sorunları yönetmek ve izlemek için kapsamlı BT destek bilet (ticket) sistemi.", tags: ['Help Desk', 'Ticket Yönetimi', 'İş Akışı Otomasyonu'], img: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=1000&auto=format&fit=crop" },
+                { title: "Zimmet & Envanter Yönetimi", desc: "Kurumsal BT altyapısı için eksiksiz donanım ve yazılım varlık takip sistemi.", tags: ['Varlık Yönetimi', 'Veritabanı', 'Barkod Sistemi'], img: "https://images.unsplash.com/photo-1562408590-e32931084e23?q=80&w=1000&auto=format&fit=crop" }
+            ],
+            en: [
+                { title: "University Ticket System", desc: "Comprehensive IT support ticketing system for managing and tracking technical issues across the university.", tags: ['Help Desk', 'Ticket Management', 'Workflow Automation'], img: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=1000&auto=format&fit=crop" },
+                { title: "Asset & Inventory Management", desc: "Complete hardware and software asset tracking system for enterprise IT infrastructure.", tags: ['Asset Management', 'Database', 'Barcode System'], img: "https://images.unsplash.com/photo-1562408590-e32931084e23?q=80&w=1000&auto=format&fit=crop" }
+            ]
+        };
+
+        let currentLang = 'tr';
+        
+        // --- Render Dynamic Lists ---
+        function renderLists() {
+            // Education
+            document.getElementById('education-container').innerHTML = educationData[currentLang].map(item => `
+                <li class="flex items-start">
+                    <i data-lucide="check-circle" class="w-4.5 h-4.5 mr-3 mt-1 text-cyan-500"></i>
+                    <div>
+                        <h4 class="font-semibold text-slate-800 dark:text-slate-200">${item.title}</h4>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">${item.desc}</p>
+                    </div>
+                </li>
+            `).join('');
+
+            // Certifications
+            document.getElementById('cert-container').innerHTML = certData[currentLang].map(item => `
+                <li class="flex items-start">
+                    <i data-lucide="check-circle" class="w-4.5 h-4.5 mr-3 mt-1 text-cyan-500"></i>
+                    <div>
+                        <h4 class="font-semibold text-slate-800 dark:text-slate-200">${item.title}</h4>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">${item.desc}</p>
+                    </div>
+                </li>
+            `).join('');
+
+            // Skills
+            document.getElementById('skills-container').innerHTML = skillData[currentLang].map((skill, index) => `
+                <div class="reveal p-6 rounded-2xl border transition-all hover:shadow-md bg-white border-slate-200 dark:bg-slate-800 dark:border-slate-700" style="transition-delay: ${index * 50}ms">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="font-semibold text-sm text-slate-800 dark:text-slate-200">${skill.name}</span>
+                        <span class="text-cyan-500 font-bold text-sm">${skill.level}%</span>
+                    </div>
+                    <div class="w-full rounded-full h-2 bg-slate-100 dark:bg-slate-700">
+                        <div class="bg-gradient-to-r from-blue-500 to-cyan-400 h-2 rounded-full" style="width: ${skill.level}%"></div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Experience
+            document.getElementById('experience-container').innerHTML = expData[currentLang].map((exp, index) => `
+                <div class="relative md:ml-12 w-full mb-12 last:mb-0">
+                    <div class="absolute -left-[30px] md:-left-[58px] top-8 w-4 h-4 rounded-full bg-[#1a73e8] shadow-[0_0_0_4px_rgba(26,115,232,0.2)]"></div>
+                    <div class="p-8 rounded-2xl border transition-all bg-white border-slate-200 shadow-sm dark:bg-slate-800 dark:border-slate-700">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-8">
+                            <div>
+                                <h3 class="text-2xl font-bold mb-2 text-[#1e293b] dark:text-white">${exp.title}</h3>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <i data-lucide="briefcase" class="w-4.5 h-4.5 text-cyan-500"></i>
+                                    <span class="text-lg font-semibold text-cyan-600 dark:text-cyan-400">${exp.company}</span>
+                                </div>
+                                <div class="flex items-center text-sm gap-2 text-slate-500 dark:text-slate-400">
+                                    <i data-lucide="calendar" class="w-4 h-4"></i>
+                                    <span>${exp.date}</span><span>•</span><span>${exp.location}</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 md:mt-0 px-3 py-1 text-xs font-bold uppercase tracking-wide rounded-md w-max ${index === 0 ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'}">${exp.badge}</div>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="text-lg font-bold mb-4 text-slate-800 dark:text-slate-200">${content[currentLang].exp.respTitle}</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
+                                ${exp.resps.map(resp => `
+                                    <div class="flex items-start gap-3">
+                                        <i data-lucide="check-circle" class="w-5 h-5 text-cyan-500 flex-shrink-0 mt-0.5"></i>
+                                        <span class="text-sm md:text-base text-slate-600 dark:text-slate-300">${resp}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Projects
+            document.getElementById('projects-container').innerHTML = projData[currentLang].map((proj, idx) => `
+                <div class="reveal flex flex-col h-full rounded-2xl overflow-hidden border transition-all duration-300 hover:shadow-xl bg-white border-slate-200 hover:border-blue-300 dark:bg-slate-800 dark:border-slate-700 dark:hover:border-blue-500/50" style="transition-delay: ${200 * (idx + 1)}ms">
+                    <div class="relative h-60 w-full overflow-hidden">
+                        <img src="${proj.img}" alt="${proj.title}" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"/>
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full shadow-sm ${idx === 0 ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'}">
+                            ${idx === 0 ? content[currentLang].proj.completed : content[currentLang].proj.inProd}
+                        </div>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <h3 class="text-2xl font-bold mb-3 text-slate-800 dark:text-white">${proj.title}</h3>
+                        <p class="text-sm mb-6 flex-grow text-slate-600 dark:text-slate-400">${proj.desc}</p>
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            ${proj.tags.map(tag => `<span class="text-xs px-3 py-1 rounded-md font-medium border bg-cyan-50 border-cyan-100 text-cyan-700 dark:bg-cyan-900/20 dark:border-cyan-800 dark:text-cyan-300">${tag}</span>`).join('')}
+                        </div>
+                        <div class="flex items-center gap-4 mt-auto">
+                            <button class="flex-grow flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-colors border-slate-200 hover:bg-slate-50 text-slate-700 dark:border-slate-600 dark:hover:bg-slate-700 dark:text-slate-300">
+                                <i data-lucide="folder" class="w-4 h-4"></i> ${content[currentLang].proj.details}
+                            </button>
+                            <button class="p-2.5 rounded-lg border transition-colors border-slate-200 hover:bg-slate-50 text-slate-700 dark:border-slate-600 dark:hover:bg-slate-700 dark:text-slate-300">
+                                <i data-lucide="github" class="w-4.5 h-4.5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons(); // Re-render icons for new HTML
+            reObserveReveals(); // Re-observe new elements
+        }
+
+        // --- Multi-Language Toggle ---
+        function toggleLang() {
+            currentLang = currentLang === 'tr' ? 'en' : 'tr';
+            document.getElementById('lang-btn-desktop').textContent = currentLang === 'tr' ? 'EN' : 'TR';
+            document.getElementById('lang-btn-mobile').textContent = currentLang === 'tr' ? 'EN' : 'TR';
+
+            // Update simple texts via data attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const keys = el.getAttribute('data-i18n').split('.');
+                let val = content[currentLang];
+                keys.forEach(k => val = val[k]);
+                
+                // For inputs with placeholder
+                if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = val;
+                } else {
+                    el.textContent = val;
+                }
+            });
+
+            // Re-render complex lists
+            renderLists();
+            buildMobileNav();
+
+            // Reset typewriter
+            typeText = '';
+            isDeleting = false;
+            typeLoopNum = 0;
+        }
+
+        // --- Dark Mode Toggle ---
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // --- Mobile Menu Toggle ---
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconOpen = document.getElementById('menu-icon-open');
+        const menuIconClose = document.getElementById('menu-icon-close');
+        
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+            menuIconOpen.classList.toggle('hidden');
+            menuIconClose.classList.toggle('hidden');
+        }
+
+        function buildMobileNav() {
+            const links = [
+                { id: 'hero', i18n: 'nav.home' }, { id: 'about', i18n: 'nav.about' },
+                { id: 'skills', i18n: 'nav.skills' }, { id: 'experience', i18n: 'nav.exp' },
+                { id: 'projects', i18n: 'nav.proj' }, { id: 'contact', i18n: 'nav.contact' }
+            ];
+            document.getElementById('mobile-nav-links').innerHTML = links.map(l => `
+                <a href="#${l.id}" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">${content[currentLang].nav[l.i18n.split('.')[1]]}</a>
+            `).join('');
+        }
+
+        // --- Typewriter Effect ---
+        let typeLoopNum = 0;
+        let isDeleting = false;
+        let typeText = '';
+        let typingSpeed = 100;
+        let typeTimer;
+
+        function typeWriter() {
+            const roles = content[currentLang].hero.roles;
+            const fullText = roles[typeLoopNum % roles.length];
+
+            if (isDeleting) {
+                typeText = fullText.substring(0, typeText.length - 1);
+                typingSpeed = 40;
+            } else {
+                typeText = fullText.substring(0, typeText.length + 1);
+                typingSpeed = 100;
+            }
+
+            document.getElementById('typewriter').textContent = typeText;
+
+            if (!isDeleting && typeText === fullText) {
+                typingSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && typeText === '') {
+                isDeleting = false;
+                typeLoopNum++;
+                typingSpeed = 500;
+            }
+
+            clearTimeout(typeTimer);
+            typeTimer = setTimeout(typeWriter, typingSpeed);
+        }
+
+        // --- Scroll Spy & Intersection Observer ---
+        function setupScrollSpy() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (scrollY >= (sectionTop - 250)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('text-blue-600', 'dark:text-blue-400', 'font-semibold');
+                    if (link.getAttribute('data-target') === current) {
+                        link.classList.add('text-blue-600', 'dark:text-blue-400', 'font-semibold');
+                    }
+                });
+            });
+        }
+
+        let observer;
+        function reObserveReveals() {
+            if(observer) observer.disconnect();
+            observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+        }
+
+        // --- Form Submission (Formspree) ---
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            const text = document.getElementById('submit-text');
+            const spinner = document.getElementById('spinner-icon');
+            const overlay = document.getElementById('form-success-overlay');
+            const successMsg = document.getElementById('success-msg');
+
+            // Set Submitting State
+            btn.disabled = true;
+            btn.classList.add('bg-blue-400', 'cursor-not-allowed');
+            btn.classList.remove('bg-[#1a73e8]', 'hover:bg-blue-700', 'hover:-translate-y-1');
+            spinner.classList.remove('hidden');
+            text.textContent = content[currentLang].contact.sending;
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('message').value
+            };
+
+            try {
+                const response = await fetch('https://formspree.io/f/xkovdeyv', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    successMsg.textContent = content[currentLang].contact.success;
+                    overlay.classList.remove('hidden');
+                    overlay.classList.add('flex');
+                    document.getElementById('contact-form').reset();
+                    
+                    setTimeout(() => {
+                        overlay.classList.add('hidden');
+                        overlay.classList.remove('flex');
+                    }, 4000);
+                } else {
+                    alert(currentLang === 'tr' ? 'Mesaj gönderilirken bir hata oluştu.' : 'An error occurred while sending.');
+                }
+            } catch (err) {
+                alert(currentLang === 'tr' ? 'Bağlantı hatası. Tekrar deneyin.' : 'Connection error. Try again.');
+            } finally {
+                // Reset Button State
+                btn.disabled = false;
+                btn.classList.remove('bg-blue-400', 'cursor-not-allowed');
+                btn.classList.add('bg-[#1a73e8]', 'hover:bg-blue-700', 'hover:-translate-y-1');
+                spinner.classList.add('hidden');
+                text.textContent = content[currentLang].contact.send;
+            }
+        });
+
+        // --- Initialization ---
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderLists();
+            buildMobileNav();
+            typeWriter();
+            setupScrollSpy();
+            
+            // Set initial placeholder texts
+            document.getElementById('name').placeholder = content.tr.contact.namePlaceholder;
+            document.getElementById('email').placeholder = content.tr.contact.emailPlaceholder;
+            document.getElementById('message').placeholder = content.tr.contact.msgPlaceholder;
+        });
+
+    </script>
+</body>
+</html>
